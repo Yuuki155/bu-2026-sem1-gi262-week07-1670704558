@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace Assignment
 {
@@ -15,6 +18,19 @@ namespace Assignment
             // Your code here ...
             // ...
 
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == target)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1)
+            {
+                Console.WriteLine("Find not found!");
+            }
+            
 
             return index;
         }
@@ -34,6 +50,18 @@ namespace Assignment
             // Your code here ...
             // ...
 
+            for (int i = 0; i < array.GetLength(0); i++) {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    if ((array[i, j] == target)) {
+                        row = i;
+                        col = j;
+                        break;
+                    }
+                }
+            }
+            
+
             return new[] { row, col };
         }
 
@@ -46,6 +74,27 @@ namespace Assignment
             // Your code here ...
             // ...
 
+            int left = 0;
+            int right = array.Length - 1;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+
+                if (array[mid] == target)
+                {
+                    index = mid;
+                    break;
+                }
+                else if (array[mid] < target)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
             return index;
         }
 
@@ -55,17 +104,68 @@ namespace Assignment
 
         public int[] AS01_FindFirstAndLastElementOfArray(int[] array, int target)
         {
-            throw new NotImplementedException();
+            int first = -1;
+            int last = -1;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == target)
+                {
+                    if (first == -1)
+                    {
+                        first = i;
+                    }
+
+                    last = i;
+                }
+            }
+
+            if (first == -1)
+            {
+                return new[] { -1 };
+            }
+
+            return new[] { first, last };
         }
 
         public int AS02_FindMaxLessThan(int[] array, int target)
         {
-            throw new NotImplementedException();
+            int max = 0;
+            bool found = false;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] < target)
+                {
+                    if (!found || array[i] > max)
+                    {
+                        max = array[i];
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                return -1;
+            }
+
+            return max;
         }
 
         public int[] AS03_FindRange(int[] array, int min, int max)
         {
-            throw new NotImplementedException();
+            List<int> result = new List<int>();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] >= min && array[i] <= max)
+                {
+                    result.Add(array[i]);
+                }
+            }
+
+            return result.ToArray();
         }
 
         #endregion
@@ -74,7 +174,26 @@ namespace Assignment
 
         public int[] EX01_FindTargetEnemies(int[] enemyHPs, int mana)
         {
-            throw new NotImplementedException();
+            int[] sortedHPs = (int[])enemyHPs.Clone();
+            Array.Sort(sortedHPs);
+
+            List<int> result = new List<int>();
+            int totalMana = 0;
+
+            for (int i = 0; i < sortedHPs.Length; i++)
+            {
+                if (totalMana + sortedHPs[i] <= mana)
+                {
+                    result.Add(sortedHPs[i]);
+                    totalMana += sortedHPs[i];
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return result.ToArray();
         }
 
         #endregion
